@@ -6,7 +6,7 @@ import { IResponse } from '../interfaces/response.interface';
 export class ResponseInterceptor<T> implements NestInterceptor<T, IResponse<T>> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<IResponse<T>> {
     return next.handle().pipe(
-      map(responseBody => {
+      map((responseBody) => {
 
         const response = context.switchToHttp().getResponse();
 
