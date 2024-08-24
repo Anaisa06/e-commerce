@@ -50,7 +50,10 @@ export class UsersService {
         hashedPassword = await this.hashPassword(updateUserDto.password);
       }
 
-     return await this.usersRepository.save({...updateUserDto, password: hashedPassword || user.password})
+      user.email = updateUserDto.email;
+      user.password = hashedPassword;
+
+     return await this.usersRepository.save(user);
 
     } catch (error) {
       console.log(error);
