@@ -3,7 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
@@ -67,6 +67,19 @@ export class ProductsService {
       const product: Product = await this.findOne(id);
 
       await this.productsRepository.remove(product);
+
+    } catch (error) {
+
+      console.log(error);
+      throw new HttpException(error.message || 'Internal server error', error.status || 500);
+    }
+  }
+
+  async getSomeProducts(ids: number[]): Promise<Product[]> {
+    try {
+      
+      const products: Product[] = await this.productsRepository.findBy({ id: In(ids) });
+      return products;
 
     } catch (error) {
 

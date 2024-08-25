@@ -1,6 +1,6 @@
-import { OrderProduct } from "src/order-products/entities/order-products.entity";
+import { Product } from "src/products/entities/product.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('orders')
 export class Order {
@@ -14,6 +14,7 @@ export class Order {
     @Column({ type: 'float', name: 'total_price' })
     totalPrice: number;
 
-    @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
-    orderProducts: OrderProduct[]
+    @ManyToMany(() => Product)
+    @JoinTable({name: 'order_products'})
+    products: Product[]
 }
